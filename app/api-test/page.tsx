@@ -4,8 +4,6 @@ import { Button } from '@/components/ui/button';
 import { useEffect, useState } from 'react';
 
 export default function WiseEncodeForm() {
-  const [result, setResult] = useState<string | null>(null);
-
   useEffect(() => {
     const handleMessage = (event: MessageEvent) => {
       const allowedOrigin = 'http://localhost:3000';
@@ -13,7 +11,17 @@ export default function WiseEncodeForm() {
 
       if (event.data?.type === 'KRI_AUTH_SUCCESS') {
         console.log('📥 결과 수신:', event.data.payload);
-        setResult(JSON.stringify(event.data.payload, null, 2));
+        //setResult(JSON.stringify(event.data.payload, null, 2));
+
+        // localStorage에 결과 저장하고 paper-validation 페이지로 이동
+        localStorage.setItem(
+          'kriValidationResult',
+          JSON.stringify(event.data.payload)
+        );
+
+        setTimeout(() => {
+          window.location.href = '/paper-validation';
+        }, 1000);
       }
     };
 
@@ -118,12 +126,6 @@ export default function WiseEncodeForm() {
   return (
     <div>
       <Button onClick={handleSubmit}>WISE 인코딩 요청</Button>
-      {result && (
-        <div>
-          <h3>결과</h3>
-          <pre>{result}</pre>
-        </div>
-      )}
     </div>
   );
 }
