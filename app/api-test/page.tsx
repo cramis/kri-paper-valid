@@ -79,7 +79,7 @@ export default function WiseEncodeForm() {
       <input
         type="text"
         name="Kri_Param9"
-        value="http://localhost:3000/paper-validation/result"
+        value="http://localhost:3000/api/kri-callback"
       /><br /><!-- 기관에서 돌려받을URL(필수) -->
       서비스코드(필수) :
       <input
