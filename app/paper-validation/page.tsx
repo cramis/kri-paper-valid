@@ -5,6 +5,12 @@ import { Input } from '@/components/ui/input';
 import Link from 'next/link';
 import { useEffect, useState } from 'react';
 
+declare global {
+  interface Window {
+    receiveValidationResult?: (data: KriResultData) => void;
+  }
+}
+
 // KRI 결과 데이터 타입 정의
 interface KriResultData {
   okri_param1: string;
@@ -58,7 +64,7 @@ export default function PaperValidationPage() {
 
   useEffect(() => {
     // 전역 함수로 등록하여 팝업에서 호출할 수 있도록 함
-    (window as any).receiveValidationResult = handleKriResult;
+    window.receiveValidationResult = handleKriResult;
 
     // localStorage에서 저장된 결과 데이터 확인
     const savedResult = localStorage.getItem('kriValidationResult');
@@ -89,7 +95,7 @@ export default function PaperValidationPage() {
 
     return () => {
       window.removeEventListener('message', handleMessage);
-      delete (window as any).receiveValidationResult;
+      delete window.receiveValidationResult;
     };
   }, []);
 
